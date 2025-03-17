@@ -12,17 +12,17 @@ const AdminContextProvider = (props) => {
     const [aToken, setAToken] = useState(localStorage.getItem('aToken') ? localStorage.getItem('aToken') : '')
 
     const [appointments, setAppointments] = useState([])
-    const [doctors, setDoctors] = useState([])
+    const [employees, setEmployees] = useState([])
     const [dashData, setDashData] = useState(false)
 
     // Getting all Doctors data from Database using API
-    const getAllDoctors = async () => {
+    const getAllEmployees = async () => {
 
         try {
 
-            const { data } = await axios.get(backendUrl + '/api/admin/all-doctors', { headers: { aToken } })
+            const { data } = await axios.get(backendUrl + '/api/admin/all-employees', { headers: { aToken } })
             if (data.success) {
-                setDoctors(data.doctors)
+                setDoctors(data.employees)
             } else {
                 toast.error(data.message)
             }
@@ -34,13 +34,13 @@ const AdminContextProvider = (props) => {
     }
 
     // Function to change doctor availablity using API
-    const changeAvailability = async (docId) => {
+    const changeAvailability = async (empId) => {
         try {
 
-            const { data } = await axios.post(backendUrl + '/api/admin/change-availability', { docId }, { headers: { aToken } })
+            const { data } = await axios.post(backendUrl + '/api/admin/change-availability', { empId}, { headers: { aToken } })
             if (data.success) {
                 toast.success(data.message)
-                getAllDoctors()
+                getAllEmployees()
             } else {
                 toast.error(data.message)
             }
@@ -113,8 +113,8 @@ const AdminContextProvider = (props) => {
 
     const value = {
         aToken, setAToken,
-        doctors,
-        getAllDoctors,
+        employees,
+        getAllEmployees,
         changeAvailability,
         appointments,
         getAllAppointments,

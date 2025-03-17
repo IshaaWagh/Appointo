@@ -1,13 +1,13 @@
 import React from 'react'
 import { useContext } from 'react'
 import { useEffect } from 'react'
-import { DoctorContext } from '../../context/DoctorContext'
 import { assets } from '../../assets/assets'
 import { AppContext } from '../../context/AppContext'
+import { BankerContext } from '../../context/BankerContext'
 
-const DoctorDashboard = () => {
+const BankerDashboard = () => {
 
-  const { dToken, dashData, getDashData, cancelAppointment, completeAppointment } = useContext(DoctorContext)
+  const { dToken, dashData, getDashData, cancelAppointment, completeAppointment } = useContext(BankerContext)
   const { slotDateFormat, currency } = useContext(AppContext)
 
 
@@ -41,7 +41,7 @@ const DoctorDashboard = () => {
           <img className='w-14' src={assets.patients_icon} alt="" />
           <div>
             <p className='text-xl font-semibold text-gray-600'>{dashData.patients}</p>
-            <p className='text-gray-400'>Patients</p></div>
+            <p className='text-gray-400'>Customer</p></div>
         </div>
       </div>
 
@@ -77,4 +77,4 @@ const DoctorDashboard = () => {
   )
 }
 
-export default DoctorDashboard
+export default BankerDashboard

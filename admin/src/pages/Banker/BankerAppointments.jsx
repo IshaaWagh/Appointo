@@ -1,12 +1,12 @@
 import React from 'react'
 import { useContext, useEffect } from 'react'
-import { DoctorContext } from '../../context/DoctorContext'
 import { AppContext } from '../../context/AppContext'
 import { assets } from '../../assets/assets'
+import { BankerContext } from '../../context/BankerContext'
 
-const DoctorAppointments = () => {
+const  BankerAppointments = () => {
 
-  const { dToken, appointments, getAppointments, cancelAppointment, completeAppointment } = useContext(DoctorContext)
+  const { dToken, appointments, getAppointments, cancelAppointment, completeAppointment } = useContext(BankerContext)
   const { slotDateFormat, calculateAge, currency } = useContext(AppContext)
 
   useEffect(() => {
@@ -23,11 +23,11 @@ const DoctorAppointments = () => {
       <div className='bg-white border rounded text-sm max-h-[80vh] overflow-y-scroll'>
         <div className='max-sm:hidden grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1fr] gap-1 py-3 px-6 border-b'>
           <p>#</p>
-          <p>Patient</p>
-          <p>Payment</p>
+          <p>Customer</p>
+          {/* <p>Payment</p> */}
           <p>Age</p>
           <p>Date & Time</p>
-          <p>Fees</p>
+          {/* <p>Fees</p> */}
           <p>Action</p>
         </div>
         {appointments.map((item, index) => (
@@ -36,11 +36,11 @@ const DoctorAppointments = () => {
             <div className='flex items-center gap-2'>
               <img src={item.userData.image} className='w-8 rounded-full' alt="" /> <p>{item.userData.name}</p>
             </div>
-            <div>
+            {/* <div>
               <p className='text-xs inline border border-primary px-2 rounded-full'>
                 {item.payment?'Online':'CASH'}
               </p>
-            </div>
+            </div> */}
             <p className='max-sm:hidden'>{calculateAge(item.userData.dob)}</p>
             <p>{slotDateFormat(item.slotDate)}, {item.slotTime}</p>
             <p>{currency}{item.amount}</p>
@@ -61,4 +61,4 @@ const DoctorAppointments = () => {
   )
 }
 
-export default DoctorAppointments
+export default BankerAppointments

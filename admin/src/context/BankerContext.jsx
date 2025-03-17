@@ -3,9 +3,9 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 
 
-export const DoctorContext = createContext()
+export const BankerContext = createContext()
 
-const DoctorContextProvider = (props) => {
+const BankerContextProvider = (props) => {
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
@@ -14,11 +14,11 @@ const DoctorContextProvider = (props) => {
     const [dashData, setDashData] = useState(false)
     const [profileData, setProfileData] = useState(false)
 
-    // Getting Doctor appointment data from Database using API
+    // Getting Banker appointment data from Database using API
     const getAppointments = async () => {
         try {
 
-            const { data } = await axios.get(backendUrl + '/api/doctor/appointments', { headers: { dToken } })
+            const { data } = await axios.get(backendUrl + '/api/Banker/appointments', { headers: { dToken } })
 
             if (data.success) {
                 setAppointments(data.appointments.reverse())
@@ -32,11 +32,11 @@ const DoctorContextProvider = (props) => {
         }
     }
 
-    // Getting Doctor profile data from Database using API
+    // Getting Banker profile data from Database using API
     const getProfileData = async () => {
         try {
 
-            const { data } = await axios.get(backendUrl + '/api/doctor/profile', { headers: { dToken } })
+            const { data } = await axios.get(backendUrl + '/api/Banker/profile', { headers: { dToken } })
             console.log(data.profileData)
             setProfileData(data.profileData)
 
@@ -46,12 +46,12 @@ const DoctorContextProvider = (props) => {
         }
     }
 
-    // Function to cancel doctor appointment using API
+    // Function to cancel Banker appointment using API
     const cancelAppointment = async (appointmentId) => {
 
         try {
 
-            const { data } = await axios.post(backendUrl + '/api/doctor/cancel-appointment', { appointmentId }, { headers: { dToken } })
+            const { data } = await axios.post(backendUrl + '/api/Banker/cancel-appointment', { appointmentId }, { headers: { dToken } })
 
             if (data.success) {
                 toast.success(data.message)
@@ -74,7 +74,7 @@ const DoctorContextProvider = (props) => {
 
         try {
 
-            const { data } = await axios.post(backendUrl + '/api/doctor/complete-appointment', { appointmentId }, { headers: { dToken } })
+            const { data } = await axios.post(backendUrl + '/api/Banker/complete-appointment', { appointmentId }, { headers: { dToken } })
 
             if (data.success) {
                 toast.success(data.message)
@@ -92,11 +92,11 @@ const DoctorContextProvider = (props) => {
 
     }
 
-    // Getting Doctor dashboard data using API
+    // Getting Banker dashboard data using API
     const getDashData = async () => {
         try {
 
-            const { data } = await axios.get(backendUrl + '/api/doctor/dashboard', { headers: { dToken } })
+            const { data } = await axios.get(backendUrl + '/api/Banker/dashboard', { headers: { dToken } })
 
             if (data.success) {
                 setDashData(data.dashData)
@@ -123,12 +123,12 @@ const DoctorContextProvider = (props) => {
     }
 
     return (
-        <DoctorContext.Provider value={value}>
+        <BankerContext.Provider value={value}>
             {props.children}
-        </DoctorContext.Provider>
+        </BankerContext.Provider>
     )
 
 
 }
 
-export default DoctorContextProvider
+export default BankerContextProvider

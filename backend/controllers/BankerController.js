@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
+import bankerModel from "../models/bankerModel.js";
 
 // API for doctor Login 
-const loginDoctor = async (req, res) => {
+const loginBanker = async (req, res) => {
 
     try {
 
         const { email, password } = req.body
-        const user = await doctorModel.findOne({ email })
+        const user = await bankerModel.findOne({ email })
 
         if (!user) {
             return res.json({ success: false, message: "Invalid credentials" })
@@ -32,11 +32,11 @@ const loginDoctor = async (req, res) => {
 }
 
 // API to get doctor appointments for doctor panel
-const appointmentsDoctor = async (req, res) => {
+const appointmentsBanker = async (req, res) => {
     try {
 
-        const { docId } = req.body
-        const appointments = await appointmentModel.find({ docId })
+        const { empId } = req.body
+        const appointments = await appointmentModel.find({ empId })
 
         res.json({ success: true, appointments })
 
@@ -50,10 +50,10 @@ const appointmentsDoctor = async (req, res) => {
 const appointmentCancel = async (req, res) => {
     try {
 
-        const { docId, appointmentId } = req.body
+        const { empId, appointmentId } = req.body
 
         const appointmentData = await appointmentModel.findById(appointmentId)
-        if (appointmentData && appointmentData.docId === docId) {
+        if (appointmentData && appointmentData.empId === empId) {
             await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
             return res.json({ success: true, message: 'Appointment Cancelled' })
         }
@@ -71,10 +71,10 @@ const appointmentCancel = async (req, res) => {
 const appointmentComplete = async (req, res) => {
     try {
 
-        const { docId, appointmentId } = req.body
+        const { empId, appointmentId } = req.body
 
         const appointmentData = await appointmentModel.findById(appointmentId)
-        if (appointmentData && appointmentData.docId === docId) {
+        if (appointmentData && appointmentData.empId === empId) {
             await appointmentModel.findByIdAndUpdate(appointmentId, { isCompleted: true })
             return res.json({ success: true, message: 'Appointment Completed' })
         }
@@ -89,11 +89,11 @@ const appointmentComplete = async (req, res) => {
 }
 
 // API to get all doctors list for Frontend
-const doctorList = async (req, res) => {
+const bankerList = async (req, res) => {
     try {
 
-        const doctors = await doctorModel.find({}).select(['-password', '-email'])
-        res.json({ success: true, doctors })
+        const bankers = await bankerModel.find({}).select(['-password', '-email'])
+        res.json({ success: true, bankers })
 
     } catch (error) {
         console.log(error)
@@ -106,10 +106,10 @@ const doctorList = async (req, res) => {
 const changeAvailablity = async (req, res) => {
     try {
 
-        const { docId } = req.body
+        const { empId } = req.body
 
-        const docData = await doctorModel.findById(docId)
-        await doctorModel.findByIdAndUpdate(docId, { available: !docData.available })
+        const empData = await bankerModel.findById(empId)
+        await bankerModel.findByIdAndUpdate(empId, { available: !empData.available })
         res.json({ success: true, message: 'Availablity Changed' })
 
     } catch (error) {
@@ -119,11 +119,11 @@ const changeAvailablity = async (req, res) => {
 }
 
 // API to get doctor profile for  Doctor Panel
-const doctorProfile = async (req, res) => {
+const bankerProfile = async (req, res) => {
     try {
 
-        const { docId } = req.body
-        const profileData = await doctorModel.findById(docId).select('-password')
+        const { empId } = req.body
+        const profileData = await bankerModel.findById(empId).select('-password')
 
         res.json({ success: true, profileData })
 
@@ -134,12 +134,12 @@ const doctorProfile = async (req, res) => {
 }
 
 // API to update doctor profile data from  Doctor Panel
-const updateDoctorProfile = async (req, res) => {
+const updateBankerProfile = async (req, res) => {
     try {
 
-        const { docId, fees, address, available } = req.body
+        const { empId, fees, address, available } = req.body
 
-        await doctorModel.findByIdAndUpdate(docId, { fees, address, available })
+        await bankerModel.findByIdAndUpdate(empId, { fees, address, available })
 
         res.json({ success: true, message: 'Profile Updated' })
 
@@ -150,12 +150,12 @@ const updateDoctorProfile = async (req, res) => {
 }
 
 // API to get dashboard data for doctor panel
-const doctorDashboard = async (req, res) => {
+const bankerDashboard = async (req, res) => {
     try {
 
-        const { docId } = req.body
+        const { empId } = req.body
 
-        const appointments = await appointmentModel.find({ docId })
+        const appointments = await appointmentModel.find({ empId })
 
         let earnings = 0
 
@@ -191,13 +191,13 @@ const doctorDashboard = async (req, res) => {
 }
 
 export {
-    loginDoctor,
-    appointmentsDoctor,
+    loginBanker,
+    appointmentsBanker,
     appointmentCancel,
-    doctorList,
+    bankerList,
     changeAvailablity,
     appointmentComplete,
-    doctorDashboard,
-    doctorProfile,
-    updateDoctorProfile
+    bankerDashboard,
+    bankerProfile,
+    updateBankerProfile
 }

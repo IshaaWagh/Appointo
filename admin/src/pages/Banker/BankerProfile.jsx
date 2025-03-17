@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { DoctorContext } from '../../context/DoctorContext'
 import { AppContext } from '../../context/AppContext'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import { BankerContext } from '../../context/BankerContext'
 
-const DoctorProfile = () => {
+const BankerProfile = () => {
 
-    const { dToken, profileData, setProfileData, getProfileData } = useContext(DoctorContext)
+    const { dToken, profileData, setProfileData, getProfileData } = useContext(BankerContext)
     const { currency, backendUrl } = useContext(AppContext)
     const [isEdit, setIsEdit] = useState(false)
 
@@ -16,12 +16,12 @@ const DoctorProfile = () => {
 
             const updateData = {
                 address: profileData.address,
-                fees: profileData.fees,
+                // fees: profileData.fees,
                 about: profileData.about,
                 available: profileData.available
             }
 
-            const { data } = await axios.post(backendUrl + '/api/doctor/update-profile', updateData, { headers: { dToken } })
+            const { data } = await axios.post(backendUrl + '/api/Banker/update-profile', updateData, { headers: { dToken } })
 
             if (data.success) {
                 toast.success(data.message)
@@ -75,9 +75,9 @@ const DoctorProfile = () => {
                         </p>
                     </div>
 
-                    <p className='text-gray-600 font-medium mt-4'>
+                    {/* <p className='text-gray-600 font-medium mt-4'>
                         Appointment fee: <span className='text-gray-800'>{currency} {isEdit ? <input type='number' onChange={(e) => setProfileData(prev => ({ ...prev, fees: e.target.value }))} value={profileData.fees} /> : profileData.fees}</span>
-                    </p>
+                    </p> */}
 
                     <div className='flex gap-2 py-2'>
                         <p>Address:</p>
@@ -105,4 +105,4 @@ const DoctorProfile = () => {
     )
 }
 
-export default DoctorProfile
+export default BankerProfile

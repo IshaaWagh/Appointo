@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 import appointmentModel from "../models/appointmentModel.js";
-import doctorModel from "../models/doctorModel.js";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import { v2 as cloudinary } from "cloudinary";
 import userModel from "../models/userModel.js";
+import bankerModel from "../models/bankerModel.js";
 
 // API for admin login
 const loginAdmin = async (req, res) => {
@@ -58,7 +58,7 @@ const appointmentCancel = async (req, res) => {
 }
 
 // API for adding Doctor
-const addDoctor = async (req, res) => {
+const addBanker = async (req, res) => {
 
     try {
 
@@ -88,7 +88,7 @@ const addDoctor = async (req, res) => {
         const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" })
         const imageUrl = imageUpload.secure_url
 
-        const doctorData = {
+        const bankerData = {
             name,
             email,
             image: imageUrl,
@@ -97,14 +97,14 @@ const addDoctor = async (req, res) => {
             degree,
             experience,
             about,
-            fees,
+            // fees,
             address: JSON.parse(address),
             date: Date.now()
         }
 
-        const newDoctor = new doctorModel(doctorData)
-        await newDoctor.save()
-        res.json({ success: true, message: 'Doctor Added' })
+        const newBanker = new bankerModel(bankerData)
+        await newBanker.save()
+        res.json({ success: true, message: 'Banker Added' })
 
     } catch (error) {
         console.log(error)
@@ -112,12 +112,12 @@ const addDoctor = async (req, res) => {
     }
 }
 
-// API to get all doctors list for admin panel
-const allDoctors = async (req, res) => {
+
+const allBankers = async (req, res) => {
     try {
 
-        const doctors = await doctorModel.find({}).select('-password')
-        res.json({ success: true, doctors })
+        const bankers = await bankerModel.find({}).select('-password')
+        res.json({ success: true, bankers })
 
     } catch (error) {
         console.log(error)
@@ -129,14 +129,14 @@ const allDoctors = async (req, res) => {
 const adminDashboard = async (req, res) => {
     try {
 
-        const doctors = await doctorModel.find({})
+        const bankers = await bankerModel.find({})
         const users = await userModel.find({})
         const appointments = await appointmentModel.find({})
 
         const dashData = {
-            doctors: doctors.length,
+            bankers: bankers.length,
             appointments: appointments.length,
-            patients: users.length,
+            customer: users.length,
             latestAppointments: appointments.reverse()
         }
 
@@ -152,7 +152,7 @@ export {
     loginAdmin,
     appointmentsAdmin,
     appointmentCancel,
-    addDoctor,
-    allDoctors,
+    addBanker,
+    allBankers,
     adminDashboard
 }
